@@ -24,17 +24,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 //        http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.authorizeRequests().antMatchers("/**")
-                .hasIpAddress("172.16.100.121")
+                .hasIpAddress("172.17.0.70")
                 .and()
                 .addFilter(getAuthenticationFilter());
         http.headers().frameOptions().disable();
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-        authenticationFilter.setAuthenticationManager(authenticationManager());
-
-        return authenticationFilter;
+        return new AuthenticationFilter(authenticationManager(), userService, env);
     }
 
     @Override
