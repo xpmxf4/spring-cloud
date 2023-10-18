@@ -14,17 +14,19 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Consumer;
-
 @Component
 @Slf4j
-@RequiredArgsConstructor
-public class AuthoriztionHeaderFilter extends AbstractGatewayFilterFactory<AuthoriztionHeaderFilter.Config> {
+public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
 
-    private final Environment env;
+    Environment env;
 
     public static class Config {
 
+    }
+
+    public AuthorizationHeaderFilter(Environment env) {
+        super(Config.class);
+        this.env = env;
     }
 
     // login -> token -> users (with token) -> header(include)
@@ -55,7 +57,7 @@ public class AuthoriztionHeaderFilter extends AbstractGatewayFilterFactory<Autho
 
         try {
             subject = Jwts.parser().setSigningKey(env.getProperty("token.secret"))
-                    .parseClaimsJwt(jwt).getBody()
+                    .parseClaimsJws(jwt).getBody()
                     .getSubject();
         } catch (Exception e) {
             returnValue = false;
