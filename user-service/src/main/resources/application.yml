@@ -33,6 +33,13 @@ logging:
   level:
     com.example.userservice: DEBUG
 
-token:
-  expiration_time: 864000000  #10 days
-  secret: user_token          #email
+#token:
+#  expiration_time: 864000000  # 10 days
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans
+
+#  secret: user_token          # email

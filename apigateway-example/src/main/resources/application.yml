@@ -70,6 +70,14 @@ spring:
             - RemoveRequestHeader=Cookie # 매 req 새롭게 보이도록
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie # 매 req 새롭게 보이도록
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: catalog-service
           uri: lb://CATALOG-SERVICE
           predicates:
@@ -79,5 +87,8 @@ spring:
           predicates:
             - Path=/order-service/**
 
-token:
-  secret: user_token
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace
