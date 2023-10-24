@@ -36,7 +36,7 @@ greeting:
 
 logging:
   level:
-    com.example.userservice: DEBUG
+    com.example.userservice.client: DEBUG
 
 #token:
 #  expiration_time: 864000000  # 10 days
